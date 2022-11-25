@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Mios
+Revisar para proyecto.txt
+pong.py
+data/banana_complete.mp4
+data/banana_horizontal.mp4
+data/banana_vertical.mp4
