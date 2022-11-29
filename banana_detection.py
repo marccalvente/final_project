@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 # from pynput.keyboard import Key, Controller
+from pynput.mouse import Controller
 # import keyboard
-import pyautogui
+# import pyautogui
 
 video = cv2.VideoCapture(0)
 
@@ -35,6 +36,7 @@ def on_press(key):
 def banana_position():
 
     # keyboard = Controller()
+    mouse = Controller()
 
     global cY
     global cX
@@ -68,7 +70,8 @@ def banana_position():
 
         # banana_pos is for controlling the 
         if cY < height_upper:
-            pyautogui.press('up')
+            # mouse.position = (960, 360)
+            # pyautogui.press('up')
             # keyboard.press_and_release('up')
             # keyboard.press(Key.up)
             # keyboard.release(Key.up)
@@ -76,7 +79,8 @@ def banana_position():
             # keyboard.release('w')
             banana_pos = 1
         elif cY > height_lower:
-            pyautogui.press('down')
+            # mouse.position = (960, 720)
+            # pyautogui.press('down')
             # keyboard.press_and_release('down')
             # keyboard.press(Key.down)
             # keyboard.release(Key.down)
@@ -84,7 +88,10 @@ def banana_position():
             # keyboard.release('s')
             banana_pos = -1
         else:
+            # mouse.position = (960, 540)
             banana_pos = 0
+
+        mouse.position = (cX/width*1920, cY/height*1080)
 
         if banana_pos != banana_pos_last_frame:
             print(banana_pos)
