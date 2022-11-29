@@ -1,5 +1,8 @@
 import cv2
 import numpy as np
+# from pynput.keyboard import Key, Controller
+# import keyboard
+import pyautogui
 
 video = cv2.VideoCapture(0)
 
@@ -13,15 +16,30 @@ height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT ))
 height_upper = int(2*height//5)
 height_lower = int(3*height//5)
 
-output = 0
-output_last_frame = 0
+global banana_pos 
+banana_pos = 0
+banana_pos_last_frame = 0
 
 cY = 0
 cX = 0
 
+def on_press(key):
+    try:
+        print('alphanumeric key {0} pressed'.format(
+            key.char))
+    except AttributeError:
+        print('special key {0} pressed'.format(
+            key))
+
+
 def banana_position():
 
-    global output_last_frame
+    # keyboard = Controller()
+
+    global cY
+    global cX
+    global banana_pos
+    global banana_pos_last_frame
 
     while True:
         ret, frame = video.read()
@@ -48,17 +66,29 @@ def banana_position():
                     # print(cX, cY)
                     cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
 
-        # output is for controlling the 
+        # banana_pos is for controlling the 
         if cY < height_upper:
-            output = 1
+            pyautogui.press('up')
+            # keyboard.press_and_release('up')
+            # keyboard.press(Key.up)
+            # keyboard.release(Key.up)
+            # keyboard.press('w')
+            # keyboard.release('w')
+            banana_pos = 1
         elif cY > height_lower:
-            output = -1
+            pyautogui.press('down')
+            # keyboard.press_and_release('down')
+            # keyboard.press(Key.down)
+            # keyboard.release(Key.down)
+            # keyboard.press('s')
+            # keyboard.release('s')
+            banana_pos = -1
         else:
-            output = 0
+            banana_pos = 0
 
-        if output != output_last_frame:
-            print(output)
-            output_last_frame = output
+        if banana_pos != banana_pos_last_frame:
+            print(banana_pos)
+            banana_pos_last_frame = banana_pos
 
         cv2.imshow("Frame", frame)
 
