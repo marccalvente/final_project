@@ -1,9 +1,8 @@
 import cv2
+import pandas as pd
 import numpy as np
 # from pynput.keyboard import Key, Controller
 from pynput.mouse import Controller
-# import keyboard
-# import pyautogui
 
 video = cv2.VideoCapture(0)
 
@@ -13,6 +12,7 @@ YELLOW_MAX = np.array([35, 255, 255],np.uint8)
 
 width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH ))
 height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT ))
+
 # Defined for cv2.line
 height_upper = int(2*height//5)
 height_lower = int(3*height//5)
@@ -25,14 +25,7 @@ banana_pos_last_frame = 0
 cY = 0
 cX = 0
 
-def on_press(key):
-    try:
-        print('alphanumeric key {0} pressed'.format(
-            key.char))
-    except AttributeError:
-        print('special key {0} pressed'.format(
-            key))
-
+positions_list = []
 
 def banana_position():
 
@@ -43,6 +36,7 @@ def banana_position():
     global cX
     global banana_pos
     global banana_pos_last_frame
+    global positions_list
 
     while True:
         ret, frame = video.read()
@@ -67,16 +61,17 @@ def banana_position():
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
                 # print(cX, cY)
+                positions_list.append([cX, cY])
                 cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
 
         # banana_pos is for controlling the 
-        if cY < height_upper:
-            banana_pos = 1
-        elif cY > height_lower:
-            banana_pos = -1
-        else:
-            # mouse.position = (960, 540)
-            banana_pos = 0
+        # if cY < height_upper:
+        #     banana_pos = 1
+        # elif cY > height_lower:
+        #     banana_pos = -1
+        # else:
+        #     # mouse.position = (960, 540)
+        #     banana_pos = 0
 
         mouse.position = (cX/width*1920, cY/height*1080)
 
@@ -93,6 +88,9 @@ def banana_position():
     # video.stop()  esto para que?
     cv2.destroyAllWindows()
 
+    positions_series = pd.Series(positions_list)
+    positions_series.to_csv("./data/position_tracking.csv")
+    print(positions_series)
     return None
 
 banana_position()
