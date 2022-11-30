@@ -98,7 +98,6 @@ def get_square_limits(x_list, y_list):
 def banana_position():
 
     keyboard = Controller()
-    # mouse_controller = mouse.Controller()
 
     keyboard_characters = ['q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', 'space', 'o', 'l', 'backspace', 'p', 'ñ', 'enter']
 
@@ -113,6 +112,10 @@ def banana_position():
     squares = get_square_limits (x_list, y_list)
     print(x_list)
     print(y_list)
+
+    actual_square = "a"
+    last_square = "b"
+    counter_square = 0
 
     while True:
         ret, frame = video.read()
@@ -133,6 +136,9 @@ def banana_position():
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
                 cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
+            else:
+                cX = 0
+                cY = 0
 
         frame = draw_grid(frame, (3,10))
         
@@ -141,23 +147,31 @@ def banana_position():
 
         for square in squares:
             if (cX > square["x_min"]) and (cX < square["x_max"]) and (cY > square["y_min"]) and (cY < square["y_max"]):
-                if square["key_to_press"] == "space":
-                    keyboard.press(Key.space)
-                    keyboard.release(Key.space)
 
-                elif square["key_to_press"] == "backspace":
-                    keyboard.press(Key.backspace)
-                    keyboard.release(Key.backspace)
+                last_square = actual_square
+                actual_square = square["key_to_press"]
+                if actual_square == last_square:
+                    counter_square += 1
 
-                elif square["key_to_press"] == "enter":
-                    keyboard.press(Key.enter)
-                    keyboard.release(Key.enter)
-                    
-                else:
-                    keyboard.press(f'{square["key_to_press"]}')
-                    keyboard.release(f'{square["key_to_press"]}')
+                if counter_square > 20:
 
-        # mouse_controller.position = (cX/width*1920, cY/height*1080)
+                    counter_square = 0
+
+                    if square["key_to_press"] == "space":
+                        keyboard.press(Key.space)
+                        keyboard.release(Key.space)
+
+                    elif square["key_to_press"] == "backspace":
+                        keyboard.press(Key.backspace)
+                        keyboard.release(Key.backspace)
+
+                    elif square["key_to_press"] == "enter":
+                        keyboard.press(Key.enter)
+                        keyboard.release(Key.enter)
+
+                    else:
+                        keyboard.press(f'{square["key_to_press"]}')
+                        keyboard.release(f'{square["key_to_press"]}')
 
         cv2.imshow("Frame", frame)
 
