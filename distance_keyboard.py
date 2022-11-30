@@ -9,7 +9,6 @@ video = cv2.VideoCapture(0)
 YELLOW_MIN = np.array([15, 70, 115],np.uint8)
 YELLOW_MAX = np.array([35, 255, 255],np.uint8)
 
-
 width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH ))
 height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT ))
 # Defined for cv2.line
@@ -71,7 +70,7 @@ def get_letter_positions(x_list, y_list):
     letter_positions = []
     for i in range(len(x_list)-1):
         for j in range(len(y_list)-1):
-            letter_positions.append((int((x_list[i]+x_list[i+1])/2), int((y_list[j]+y_list[j+1])/2)))
+            letter_positions.append((int((x_list[i]+x_list[i+1])/2)-10, int((y_list[j]+y_list[j+1])/2)))
     return letter_positions
 
 
@@ -153,7 +152,7 @@ def banana_position():
                 if actual_square == last_square:
                     counter_square += 1
 
-                if counter_square > 20:
+                if counter_square > 30:
 
                     counter_square = 0
 
