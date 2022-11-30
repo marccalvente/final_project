@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 # from pynput.keyboard import Key, Controller
 from pynput.mouse import Controller
+from datetime import date
+import visualize_path
 
 video = cv2.VideoCapture(0)
 
@@ -89,8 +91,9 @@ def banana_position():
     cv2.destroyAllWindows()
 
     positions_series = pd.Series(positions_list)
-    positions_series.to_csv("./data/position_tracking.csv")
-    print(positions_series)
+    positions_series.to_csv(f"./data/{date.today().strftime('%Y_%m_%d')}_position_tracking.csv")
     return None
 
 banana_position()
+## This has to be moved to a main.py file
+visualize_path.plot_path(f"./data/{date.today().strftime('%Y_%m_%d')}_position_tracking.csv")
