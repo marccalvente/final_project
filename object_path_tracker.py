@@ -2,8 +2,8 @@ import cv2
 import pandas as pd
 import numpy as np
 
-from pynput.mouse import Controller
-
+from datetime import date
+import visualize_path
 
 video = cv2.VideoCapture(0)
 
@@ -11,20 +11,17 @@ YELLOW_MIN = np.array([15, 70, 115],np.uint8)
 YELLOW_MAX = np.array([35, 255, 255],np.uint8)
 # YELLOW_MAX = np.array([35, 255, 125],np.uint8)  ## Depending on the lighting this works better 
 
-width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH ))
-height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT ))
-
 cY = 0
 cX = 0
 
 positions_list = []
 
-def banana_position():
-
-    mouse = Controller()
+def track_position():
 
     global cY
     global cX
+
+    global positions_list
 
     while True:
         ret, frame = video.read()
@@ -44,9 +41,8 @@ def banana_position():
                 M = cv2.moments(max_contour)
                 cX = int(M["m10"] / M["m00"])
                 cY = int(M["m01"] / M["m00"])
+                positions_list.append([cX, cY])
                 cv2.circle(frame, (cX, cY), 7, (255, 255, 255), -1)
-
-        mouse.position = (cX/width*1920, cY/height*1080)
 
         cv2.imshow("Frame", frame)
 
@@ -56,7 +52,11 @@ def banana_position():
 
     cv2.destroyAllWindows()
 
+    positions_series = pd.Series(positions_list)
+    positions_series.to_csv(f"./data/{date.today().strftime('%Y_%m_%d')}_position_tracking.csv")
     return None
 
-banana_position()
+track_position()
+## This has to be moved to a main.py file
+visualize_path.plot_path(f"./data/{date.today().strftime('%Y_%m_%d')}_position_tracking.csv")
 

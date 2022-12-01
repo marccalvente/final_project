@@ -98,7 +98,7 @@ def banana_position():
 
     keyboard = Controller()
 
-    keyboard_characters = ['q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', 'space', 'o', 'l', 'backspace', 'p', 'ñ', 'enter']
+    keyboard_characters = ['q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', 'sp_', 'o', 'l', 'del', 'p', 'ñ', 'ent']
 
     global cY
     global cX
