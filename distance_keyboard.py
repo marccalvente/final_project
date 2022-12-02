@@ -98,7 +98,7 @@ def banana_position():
 
     keyboard = Controller()
 
-    keyboard_characters = ['q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', 'sp_', 'o', 'l', 'del', 'p', 'ñ', 'ent']
+    keyboard_characters = ['q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', 'sp', 'o', 'l', 'del', 'p', 'ñ', 'ent']
 
     global cY
     global cX
@@ -109,8 +109,6 @@ def banana_position():
     x_list, y_list = get_lines_position(frame_ini, (3,10))
     letter_positions = get_letter_positions(x_list, y_list)
     squares = get_square_limits (x_list, y_list)
-    print(x_list)
-    print(y_list)
 
     actual_square = "a"
     last_square = "b"
@@ -152,7 +150,7 @@ def banana_position():
                 if actual_square == last_square:
                     counter_square += 1
 
-                if counter_square > 30:
+                if counter_square > 35:
 
                     counter_square = 0
 
